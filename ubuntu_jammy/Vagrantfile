@@ -1,7 +1,14 @@
 Vagrant.configure("2") do |config|
-    config.vm.box = "ubuntu/jammy64"
-    config.vm.box_version = "20241002.0.0"
+  config.vm.box = "ubuntu/jammy64"
+  config.vm.box_version = "20241002.0.0"
+
+config.vm.cloud_init :user_data,
+  content_type: "text/cloud-config",
+  path: "config.cfg"
   
-  config.vm.cloud_init :user_data, content_type: "text/cloud-config", path: "config.cfg"
-  end
-  
+config.vm.network "forwarded_port",
+  guest: 9000,
+  host: 9000,
+  auto_correct: true
+
+end
