@@ -4,13 +4,8 @@ Vagrant.configure("2") do |config|
   config.vm.boot_timeout = 1200
 
   config.vm.provider "virtualbox" do |vb|
-    vb.gui    = false
     vb.memory = 4096
     vb.cpus   = 4
-
-    # Enable nested virtualization and use KVM paravirt provider
-    vb.customize ["modifyvm", :id, "--nested-hw-virt", "on"]
-    vb.customize ["modifyvm", :id, "--paravirtprovider", "kvm"]
   end
 
   config.vm.cloud_init :user_data,
