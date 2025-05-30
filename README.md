@@ -162,7 +162,8 @@ exercise-03-cloud-init/
 
 The system architecture follows the cloud-init provisioning flow as designed in the project documentation. The complete workflow demonstrates how Vagrant initializes the Ubuntu 22.04 VM, injects the cloud-init configuration file, and orchestrates the entire deployment process from system updates through Graylog stack deployment.
 
-![Cloud-Init Provisioning Flow](docs/architecture-diagram.png)
+<img width="600" alt="Exercise 03 - Cloud instance initialization (6)" src="https://github.com/user-attachments/assets/3e627587-345f-4629-9450-aeb75d8ecf2d" />
+
 *Figure 1: The diagram displaying the Cloud-init Provisioning flow from Vagrant initialization to full Graylog stack deployment.*
 
 ### Key Architecture Components
