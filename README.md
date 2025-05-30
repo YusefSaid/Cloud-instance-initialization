@@ -54,7 +54,6 @@ exercise-03-cloud-init/
 ├── README.md --------------------------------> # This file
 ├── Vagrantfile ------------------------------> # VM configuration with cloud-init
 ├── config.cfg -------------------------------> # Cloud-init configuration file
-├── docker-compose.yml -----------------------> # Graylog stack definition (generated)
 ├── .vagrant/ --------------------------------> # Vagrant runtime data (auto-generated)
 │   └── machines/ ----------------------------> # VM-specific configurations
 │       └── default/ -------------------------> # Default VM state
@@ -63,6 +62,9 @@ exercise-03-cloud-init/
     ├── cloud-init.log -----------------------> # Cloud-init execution log
     ├── docker.log ---------------------------> # Docker installation log
     └── graylog.log --------------------------> # Graylog stack logs
+
+# Generated inside VM at /home/vagrant/:
+├── docker-compose.yml -----------------------> # Graylog stack definition (cloud-init generated)
 ```
 
 ## Quick Start
@@ -156,37 +158,27 @@ exercise-03-cloud-init/
 
 ## Architecture
 
-### High-Level Architecture
+### Architecture Overview
 
-```mermaid
-graph TD
-    A[Host Machine] --> B[Vagrant]
-    B --> C[VirtualBox VM]
-    C --> D[Ubuntu 22.04]
-    D --> E[Cloud-Init]
-    E --> F[System Updates]
-    E --> G[Docker Installation]
-    E --> H[User Creation]
-    E --> I[Network Config]
-    G --> J[Docker Compose]
-    J --> K[MongoDB]
-    J --> L[OpenSearch]
-    J --> M[Graylog]
-    M --> N[Web UI :9000]
-```
+The system architecture follows the cloud-init provisioning flow as designed in the project documentation. The complete workflow demonstrates how Vagrant initializes the Ubuntu 22.04 VM, injects the cloud-init configuration file, and orchestrates the entire deployment process from system updates through Graylog stack deployment.
+
+![Cloud-Init Provisioning Flow](docs/architecture-diagram.png)
+*Figure 1: The diagram displaying the Cloud-init Provisioning flow from Vagrant initialization to full Graylog stack deployment.*
+
+### Key Architecture Components
+
+1. **Initialization Layer**: Vagrant + VirtualBox VM management
+2. **Provisioning Layer**: Cloud-init configuration and execution
+3. **Infrastructure Layer**: Docker Engine + Compose plugin
+4. **Application Layer**: MongoDB, OpenSearch, and Graylog containers
+5. **Access Layer**: Web UI accessible on port 9000
 
 ### Service Dependencies
 
-```mermaid
-graph LR
-    A[MongoDB] --> C[Graylog]
-    B[OpenSearch] --> C[Graylog]
-    C --> D[Web Interface]
-    E[Docker Engine] --> F[Docker Compose]
-    F --> A
-    F --> B
-    F --> C
-```
+- **MongoDB**: Provides document storage for Graylog configuration and metadata
+- **OpenSearch**: Handles log indexing and search functionality
+- **Graylog**: Central logging platform that coordinates between MongoDB and OpenSearch
+- **Docker Network**: Bridge network enabling inter-container communication
 
 ## Cloud-Init Configuration
 
